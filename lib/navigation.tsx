@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
-import { MiningIcon } from '../components/icons/MiningIcon';
-import { NavigationIcon } from '../components/icons/NavigationIcon';
-import { FittingIcon } from '../components/icons/FittingIcon';
-import { CargoHoldIcon } from '../components/icons/CargoHoldIcon';
+import { DashboardIcon } from '@/components/icons/DashboardIcon';
+import { MiningIcon } from '@/components/icons/MiningIcon';
+import { NavigationIcon } from '@/components/icons/NavigationIcon';
+import { FittingIcon } from '@/components/icons/FittingIcon';
+import { CargoHoldIcon } from '@/components/icons/CargoHoldIcon';
 import path from 'path';
 
 export const APP_ROUTES = {
@@ -11,7 +12,7 @@ export const APP_ROUTES = {
     name: 'Dashboard',
     path: '/',
     section: 'Operations',
-    icon: <svg></svg>,
+    icon: <DashboardIcon />,
   },
   MINING: {
     key: 'mining',
@@ -40,5 +41,5 @@ export const APP_ROUTES = {
     path: '/cargo-hold',
     section: 'Ship Management',
     icon: <CargoHoldIcon />,
-  }
-}
+  },
+};
