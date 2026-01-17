@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Orbitron, Rajdhani, Space_Mono, Geist } from "next/font/google";
 import "./globals.css";
+import GameShell from "@/components/layout/GameShell";
 
 const orbitron = Orbitron({
   variable: "--font-orbitron",
-  weight: ["400", "700"],
+weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -44,7 +45,9 @@ export default function RootLayout({
       <body
         className={`${orbitron.variable} ${rajdhani.variable} ${spaceMono.variable} ${geistSans.variable} antialiased`}
       >
-        {children}
+        <GameShell>
+          {children}
+        </GameShell>
       </body>
     </html>
   );
