@@ -49,13 +49,13 @@ export default function GameShell({ children }: { children: ReactNode }) {
 
         <main className="flex-1 m-3">{children}</main>
       </div>
-      <div className="drawer-side z-20 border-r border-primary">
+      <div className="drawer-side z-20">
         <label
           htmlFor="main-nav-toggle"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 min-h-full w-48 p-3 font-header">
+        <ul className="menu bg-base-200 min-h-full w-48 p-3 font-header border-r border-primary">
           <li className="menu-title w-fit p-1">
             <GameLogo />
           </li>
