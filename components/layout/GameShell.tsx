@@ -18,11 +18,13 @@ export default function GameShell({ children }: { children: ReactNode }) {
   const pageTitle = activeRoute ? activeRoute.name : 'Star Vein Idle';
   const pageIcon = activeRoute?.icon as React.ReactElement | null;
 
+  const credits = 1200000;
+
   return (
     <div className="drawer md:drawer-open">
       <input id="main-nav-toggle" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col h-screen">
-        <div className="navbar bg-base-300 z-10 shadow-md m-3 w-auto rounded-box">
+        <div className="navbar bg-base-300 z-10 shadow-md mx-3 mt-3 p-3 w-auto rounded-box">
           <div className="navbar-start">
             <label
               htmlFor="main-nav-toggle"
@@ -42,8 +44,9 @@ export default function GameShell({ children }: { children: ReactNode }) {
               {pageTitle}
             </div>
           </div>
-          <div className="navbar-end">
-            {/* Placeholder spot for something in the future */}
+          <div className="navbar-end text-sm flex-col items-end font-header tabular-nums">
+            <div className="text-success">{credits.toLocaleString()} CR</div>
+            <div className="text-secondary">Cargo: 120/200 m³</div>
           </div>
         </div>
 
@@ -55,7 +58,7 @@ export default function GameShell({ children }: { children: ReactNode }) {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 min-h-full w-48 p-3 font-header border-r border-primary">
+        <ul className="menu bg-base-300 min-h-full w-48 p-3 font-header border-r border-primary">
           <li className="menu-title w-fit p-1">
             <GameLogo />
           </li>
