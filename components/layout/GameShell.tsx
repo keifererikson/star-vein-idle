@@ -4,7 +4,9 @@ import React, { cloneElement, isValidElement, ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-import { APP_ROUTES } from '@/lib/navigation';
+import { APP_ROUTES, SIDEBAR_STRUCTURE } from '@/lib/navigation';
+import { SidebarNavItem } from './SidebarNavItem';
+import { GameLogo } from './GameLogo';
 import { HamburgerIcon } from '@/components/icons/HamburgerIcon';
 
 export default function GameShell({ children }: { children: ReactNode }) {
@@ -45,7 +47,7 @@ export default function GameShell({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1 p-3">{children}</main>
       </div>
       <div className="drawer-side z-20">
         <label
@@ -53,55 +55,24 @@ export default function GameShell({ children }: { children: ReactNode }) {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 min-h-full w-60 p-4 border-r border-base-300">
-          <li className="menu-title text-primary text-2xl font-display content w-fit">
-            <span>
-              STAR <span className="text-white">VEIN</span>
-            </span>
-            <div className="flex justify-between text-gray-600 text-sm -mt-2">
-              <span>I</span>
-              <span>D</span>
-              <span>L</span>
-              <span>E</span>
-            </div>
-          </li>
-          <li className="mt-4">
-            <Link className="font-header" href={APP_ROUTES.DASHBOARD.path}>
-              {APP_ROUTES.DASHBOARD.icon}
-              {APP_ROUTES.DASHBOARD.name}
-            </Link>
-          </li>
-          <li className="menu-title text-accent text-lg font-header">
-            Operations
-          </li>
-          <li className="">
-            <Link className="font-header" href={APP_ROUTES.MINING.path}>
-              {APP_ROUTES.MINING.icon}
-              {APP_ROUTES.MINING.name}
-            </Link>
-          </li>
-          <li className="">
-            <Link className="font-header" href={APP_ROUTES.NAVIGATION.path}>
-              {APP_ROUTES.NAVIGATION.icon}
-              {APP_ROUTES.NAVIGATION.name}
-            </Link>
+        <ul className="menu bg-base-200 min-h-full w-48 p-3 border-r border-base-300 font-header">
+          <li className="menu-title w-fit p-1">
+            <GameLogo />
           </li>
 
-          <li className="menu-title text-accent text-lg font-header mt-4">
-            Ship Management
-          </li>
-          <li className="">
-            <Link className="font-header" href={APP_ROUTES.FITTING.path}>
-              {APP_ROUTES.FITTING.icon}
-              {APP_ROUTES.FITTING.name}
-            </Link>
-          </li>
-          <li className="">
-            <Link className="font-header" href={APP_ROUTES.CARGO_HOLD.path}>
-              {APP_ROUTES.CARGO_HOLD.icon}
-              {APP_ROUTES.CARGO_HOLD.name}
-            </Link>
-          </li>
+          {SIDEBAR_STRUCTURE.map(({ section, routes }) => (
+            <React.Fragment key={section}>
+              <li className="menu-title text-accent text-lg mt-3">{section}</li>
+              {routes?.map((route) => (
+                <SidebarNavItem
+                  key={route.path}
+                  href={route.path}
+                  icon={route.icon}
+                  name={route.name}
+                />
+              ))}
+            </React.Fragment>
+          ))}
         </ul>
       </div>
     </div>

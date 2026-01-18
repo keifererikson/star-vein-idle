@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-export const DashboardIcon = ({
+export const OverviewIcon = ({
   className = 'w-4 h-4',
   ...props
 }: ComponentProps<'svg'>) => {
