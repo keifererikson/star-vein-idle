@@ -22,7 +22,7 @@ export default function GameShell({ children }: { children: ReactNode }) {
     <div className="drawer md:drawer-open">
       <input id="main-nav-toggle" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col h-screen">
-        <div className="navbar bg-base-300 w-full z-10 shadow-md">
+        <div className="navbar bg-base-300 z-10 shadow-md m-3 w-auto rounded-box">
           <div className="navbar-start">
             <label
               htmlFor="main-nav-toggle"
@@ -47,15 +47,15 @@ export default function GameShell({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <main className="flex-1 p-3">{children}</main>
+        <main className="flex-1 m-3">{children}</main>
       </div>
-      <div className="drawer-side z-20">
+      <div className="drawer-side z-20 border-r border-primary">
         <label
           htmlFor="main-nav-toggle"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 min-h-full w-48 p-3 border-r border-base-300 font-header">
+        <ul className="menu bg-base-200 min-h-full w-48 p-3 font-header">
           <li className="menu-title w-fit p-1">
             <GameLogo />
           </li>
