@@ -25,9 +25,12 @@ interface Ship {
 }
 
 interface GameState {
-  resources: {
+  currencies: {
     data: number;
     credits: number;
+  };
+  skills: {
+    miningLevel: number;
   };
   lastSaveTime: number;
   ship: Ship;
@@ -36,9 +39,6 @@ interface GameState {
     targetResourceId: ResourceId | null;
     cycleStartTime: number;
     cycleDuration: number;
-  };
-  unlocks: {
-    scannedSystems: SystemId[];
   };
   actions: {
     tick: (now: number) => void;
@@ -51,3 +51,50 @@ interface GameState {
     importSave: (data: string) => boolean;
   };
 }
+
+export const useGameState = create<GameState>()(
+  persist(
+    immer((set, get) => ({
+      currencies: {
+        data: 0,
+        credits: 1000,
+      },
+      skills: {
+        miningLevel: 1,
+      },
+      lastSaveTime: Date.now(),
+      ship: {
+        name: 'SS Venture',
+        hullType: 'FRIGATE',
+        stats: {
+          maxSlots: 4,
+          maxCargo: 200,
+          baseWarpSpeed: 100,
+        },
+        modules: [],
+        cargo: {},
+        cargoUsed: 0,
+      },
+      status: 'IDLE',
+      mining: {
+        targetResourceId: null,
+        cycleStartTime: 0,
+        cycleDuration: 0,
+      },
+      actions: {
+        tick: () => {},
+        startMining: () => {},
+        stopMining: () => {},
+        sellCargo: () => {},
+
+        reset: () => {},
+        exportSave: () => '',
+        importSave: () => false,
+      },
+    })),
+    {
+      name: 'star-vein-idle-game-state',
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);

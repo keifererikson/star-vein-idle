@@ -5,11 +5,13 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import { APP_ROUTES, SIDEBAR_STRUCTURE } from '@/lib/navigation';
+import { useGameState } from '@/store/useGameStore';
 import { SidebarNavItem } from './SidebarNavItem';
 import { GameLogo } from './GameLogo';
 import { HamburgerIcon } from '@/components/icons/HamburgerIcon';
 
 export default function GameShell({ children }: { children: ReactNode }) {
+  const state = useGameState();
   const pathname = usePathname();
 
   const activeRoute = Object.values(APP_ROUTES).find(
@@ -45,8 +47,12 @@ export default function GameShell({ children }: { children: ReactNode }) {
             </div>
           </div>
           <div className="navbar-end text-sm flex-col items-end font-header tabular-nums">
-            <div className="text-success">{credits.toLocaleString()} CR</div>
-            <div className="text-secondary">Cargo: 120/200 m³</div>
+            <div className="text-success">
+              {state.currencies.credits.toLocaleString()} CR
+            </div>
+            <div className="text-secondary">
+              Cargo: {state.ship.cargoUsed}/{state.ship.stats.maxCargo} m³
+            </div>
           </div>
         </div>
 
