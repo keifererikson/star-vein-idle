@@ -90,8 +90,22 @@ export const useGameState = create<GameState>()(
             processMining(draft, deltaMs);
           });
         },
-        startMining: () => {},
-        stopMining: () => {},
+        startMining: (resourceID: ResourceId) => {
+          set((draft) => {
+            draft.status = 'MINING';
+            draft.mining.targetResourceId = resourceID;
+            draft.mining.cycleStartTime = 0;
+
+            draft.mining.cycleDuration = 2000;
+          });
+        },
+        stopMining: () => {
+          set((draft) => {
+            draft.status = 'IDLE';
+            draft.mining.targetResourceId = null;
+            draft.mining.cycleStartTime = 0;
+          });
+        },
         sellCargo: () => {},
 
         reset: () => {},
@@ -102,6 +116,22 @@ export const useGameState = create<GameState>()(
     {
       name: 'star-vein-idle-game-state',
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        currencies: state.currencies,
+        skills: state.skills,
+        lastTickTimestamp: state.lastTickTimestamp,
+        lastSaveTimestamp: state.lastSaveTimestamp,
+        ship: state.ship,
+        status: state.status,
+        mining: state.mining,
+      }),
+      merge: (persistedState, currentState) => {
+        return {
+          ...currentState,
+          ...(persistedState as object),
+          actions: currentState.actions,
+        };
+      },
     },
   ),
 );
