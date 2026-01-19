@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 import { RESOURCES, SYSTEMS, ResourceId, SystemId } from '@/lib/constants';
+import { processMining } from '@/systems/miningSystem';
 
 interface ShipModule {
   id: string;
@@ -24,14 +25,12 @@ interface Ship {
   cargoUsed: number;
 }
 
-interface GameState {
+export interface GameState {
   currencies: {
     data: number;
     credits: number;
   };
-  skills: {
-    miningLevel: number;
-  };
+  skills: Record<string, number>;
   lastSaveTime: number;
   ship: Ship;
   status: 'IDLE' | 'MINING';
@@ -41,7 +40,7 @@ interface GameState {
     cycleDuration: number;
   };
   actions: {
-    tick: (now: number) => void;
+    tick: (deltaMs: number) => void;
     startMining: (resourceId: ResourceId) => void;
     stopMining: () => void;
     sellCargo: () => void;
@@ -82,7 +81,13 @@ export const useGameState = create<GameState>()(
         cycleDuration: 0,
       },
       actions: {
-        tick: () => {},
+        tick: (deltaMs: number) => {
+          set((draft) => {
+            draft.lastSaveTime += deltaMs;
+
+            processMining(get(), deltaMs);
+          });
+        },
         startMining: () => {},
         stopMining: () => {},
         sellCargo: () => {},
