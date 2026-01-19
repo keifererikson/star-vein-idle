@@ -31,6 +31,9 @@ export default function OverviewPage() {
           <h2>Mining</h2>
           <p>Target: {state.mining.targetResourceId || 'None'}</p>
           <p>Cycle Duration: {state.mining.cycleDuration}ms</p>
+          <h2>Timestamps</h2>
+          <p>Last Tick: {state.lastTickTimestamp}</p>
+          <p>Last Save: {new Date(state.lastSaveTimestamp).toLocaleString()}</p>
         </div>
       </div>
       {/* Add buttons for actions later, e.g., <button onClick={() => state.actions.reset()}>Reset</button> */}

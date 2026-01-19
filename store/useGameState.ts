@@ -31,7 +31,8 @@ export interface GameState {
     credits: number;
   };
   skills: Record<string, number>;
-  lastSaveTime: number;
+  lastTickTimestamp: number;
+  lastSaveTimestamp: number;
   ship: Ship;
   status: 'IDLE' | 'MINING';
   mining: {
@@ -61,7 +62,8 @@ export const useGameState = create<GameState>()(
       skills: {
         miningLevel: 1,
       },
-      lastSaveTime: Date.now(),
+      lastTickTimestamp: 0,
+      lastSaveTimestamp: 0,
       ship: {
         name: 'SS Venture',
         hullType: 'FRIGATE',
@@ -83,9 +85,9 @@ export const useGameState = create<GameState>()(
       actions: {
         tick: (deltaMs: number) => {
           set((draft) => {
-            draft.lastSaveTime += deltaMs;
+            draft.lastTickTimestamp += deltaMs;
 
-            processMining(get(), deltaMs);
+            processMining(draft, deltaMs);
           });
         },
         startMining: () => {},

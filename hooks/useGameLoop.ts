@@ -24,5 +24,5 @@ export const useGameLoop = () => {
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [tick]);
+  }, []);
 };

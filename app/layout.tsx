@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Orbitron, Rajdhani, Space_Mono, Geist } from 'next/font/google';
 import './globals.css';
 import GameShell from '@/components/layout/GameShell';
+import GameManager from '@/components/GameManager';
 
 const orbitron = Orbitron({
   variable: '--font-orbitron',
@@ -44,6 +45,7 @@ export default function RootLayout({
       <body
         className={`${orbitron.variable} ${rajdhani.variable} ${spaceMono.variable} ${geistSans.variable} antialiased`}
       >
+        <GameManager />
         <GameShell>
           <div className="rounded-box h-full p-3">{children}</div>
         </GameShell>
