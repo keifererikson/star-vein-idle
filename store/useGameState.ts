@@ -45,6 +45,8 @@ export interface GameState {
     startMining: (resourceId: ResourceId) => void;
     stopMining: () => void;
     sellCargo: () => void;
+    // temp jettison cargo for testing
+    jettison: () => void;
 
     reset: () => void;
     exportSave: () => string;
@@ -107,7 +109,12 @@ export const useGameState = create<GameState>()(
           });
         },
         sellCargo: () => {},
-
+        jettison: () => {
+          set((draft) => {
+            draft.ship.cargo = {};
+            draft.ship.cargoUsed = 0;
+          });
+        },
         reset: () => {},
         exportSave: () => '',
         importSave: () => false,

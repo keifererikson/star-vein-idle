@@ -1,6 +1,7 @@
 'use client';
 
 import { useGameState } from '@/store/useGameState';
+import { ProgressBar } from '@/components/ui/ProgressBar';
 
 export default function OverviewPage() {
   const state = useGameState();
@@ -30,22 +31,36 @@ export default function OverviewPage() {
         <div>
           <h2>Mining</h2>
           <p>Target: {state.mining.targetResourceId || 'None'}</p>
+          <ProgressBar
+            start={state.mining.cycleStartTime}
+            duration={state.mining.cycleDuration}
+            className=""
+          />
           <p>Cycle Duration: {state.mining.cycleDuration}ms</p>
           <button
             onClick={() => state.actions.startMining('iron')}
-            className="btn"
+            className="btn btn-success mr-2"
           >
             Start Mining
           </button>
-          <button onClick={() => state.actions.stopMining()} className="btn">
+          <button
+            onClick={() => state.actions.stopMining()}
+            className="btn btn-error"
+          >
             Stop Mining
+          </button>
+          <button
+            onClick={() => state.actions.jettison()}
+            className="btn btn-warning ml-2"
+          >
+            Jettison
           </button>
           <h2>Timestamps</h2>
           <p>Last Tick: {state.lastTickTimestamp / 1000}</p>
           <p>Last Save: {new Date(state.lastSaveTimestamp).toLocaleString()}</p>
           <button
             onClick={() => (state.lastSaveTimestamp = Date.now())}
-            className="btn"
+            className="btn btn-primary"
           >
             Save
           </button>
