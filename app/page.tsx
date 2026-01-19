@@ -1,6 +1,6 @@
 'use client';
 
-import { useGameState } from '@/store/useGameStore';
+import { useGameState } from '@/store/useGameState';
 
 export default function OverviewPage() {
   const state = useGameState();

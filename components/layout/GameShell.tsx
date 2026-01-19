@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import { APP_ROUTES, SIDEBAR_STRUCTURE } from '@/lib/navigation';
-import { useGameState } from '@/store/useGameStore';
+import { useGameState } from '@/store/useGameState';
 import { SidebarNavItem } from './SidebarNavItem';
 import { GameLogo } from './GameLogo';
 import { HamburgerIcon } from '@/components/icons/HamburgerIcon';
