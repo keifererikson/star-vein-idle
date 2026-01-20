@@ -137,6 +137,7 @@ export const useGameState = create<GameState>()(
           ...currentState,
           ...(persistedState as object),
           actions: currentState.actions,
+          lastTickTimestamp: 0,
         };
       },
     },
