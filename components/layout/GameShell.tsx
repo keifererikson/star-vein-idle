@@ -25,7 +25,7 @@ export default function GameShell({ children }: { children: ReactNode }) {
   return (
     <div className="drawer md:drawer-open">
       <input id="main-nav-toggle" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col h-screen">
+      <div className="drawer-content flex flex-col h-screen bg-base-100">
         <div className="navbar bg-base-300 z-10 shadow-md mx-3 mt-3 p-3 w-auto rounded-box">
           <div className="navbar-start">
             <label
