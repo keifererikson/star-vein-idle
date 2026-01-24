@@ -7,7 +7,7 @@ export default function OverviewPage() {
   const state = useGameState();
 
   return (
-    <div className="p-4">
+    <div className="p-3 card bg-base-200">
       <h1 className="text-2xl font-bold">Overview (Debug)</h1>
       <div className="grid grid-cols-2 gap-4 mt-4">
         <div>

@@ -47,7 +47,7 @@ export default function RootLayout({
       >
         <GameManager />
         <GameShell>
-          <div className="rounded-box h-full p-3">{children}</div>
+          <div className="rounded-box h-full">{children}</div>
         </GameShell>
       </body>
     </html>
