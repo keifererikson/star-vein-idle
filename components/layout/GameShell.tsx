@@ -2,7 +2,6 @@
 
 import React, { cloneElement, isValidElement, ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 
 import { APP_ROUTES, SIDEBAR_STRUCTURE } from '@/lib/navigation';
 import { useGameState } from '@/store/useGameState';
@@ -19,8 +18,6 @@ export default function GameShell({ children }: { children: ReactNode }) {
   );
   const pageTitle = activeRoute ? activeRoute.name : 'Star Vein Idle';
   const pageIcon = activeRoute?.icon as React.ReactElement | null;
-
-  const credits = 1200000;
 
   return (
     <div className="drawer md:drawer-open">
@@ -39,9 +36,9 @@ export default function GameShell({ children }: { children: ReactNode }) {
             <div className="flex text-2xl font-header font-bold items-center gap-2 mx-auto">
               {pageIcon && isValidElement(pageIcon)
                 ? cloneElement(
-                    pageIcon as React.ReactElement<{ className?: string }>,
-                    { className: 'w-6 h-6' },
-                  )
+                  pageIcon as React.ReactElement<{ className?: string }>,
+                  { className: 'w-6 h-6' },
+                )
                 : null}
               {pageTitle}
             </div>

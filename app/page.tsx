@@ -12,7 +12,7 @@ export default function OverviewPage() {
       <div className="grid grid-cols-2 gap-4 mt-4">
         <div>
           <h2>Currencies</h2>
-          <p>Credits: {state.currencies.credits}</p>
+          <p>Credits: {state.currencies.credits} CR</p>
           <p>Data: {state.currencies.data}</p>
         </div>
         <div>
@@ -24,7 +24,7 @@ export default function OverviewPage() {
           <p>Name: {state.ship.name}</p>
           <p>Status: {state.status}</p>
           <p>
-            Cargo Used: {state.ship.cargoUsed} / {state.ship.stats.maxCargo}
+            Cargo Used: {state.ship.cargoUsed} / {state.ship.stats.maxCargo} m³
           </p>
           <p>Cargo: {JSON.stringify(state.ship.cargo)}</p>
         </div>
