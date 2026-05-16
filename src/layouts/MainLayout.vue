@@ -1,0 +1,108 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { Menu, Rocket } from 'lucide-vue-next'
+
+import SciFiButton from '@/components/Action/SciFiButton.vue'
+import {
+  DEFAULT_SECTION_ID,
+  SECTIONS,
+  type SectionId,
+} from '@/lib/sections'
+import { usePlayerStore } from '@/stores/usePlayerStore'
+
+const player = usePlayerStore()
+const activeSectionId = ref<SectionId>(DEFAULT_SECTION_ID)
+const sidebarOpen = ref(false)
+
+const activeSection = computed(() =>
+  SECTIONS.find((section) => section.id === activeSectionId.value) ??
+  SECTIONS[0],
+)
+
+function selectSection(id: SectionId) {
+  activeSectionId.value = id
+  sidebarOpen.value = false
+}
+</script>
+
+<template>
+  <div class="drawer md:drawer-open">
+    <input
+      id="main-nav-toggle"
+      v-model="sidebarOpen"
+      type="checkbox"
+      class="drawer-toggle"
+    />
+
+    <div class="drawer-content flex h-screen flex-col">
+      <header
+        class="navbar z-10 mx-3 mt-3 w-auto shrink-0 rounded-lg border border-space-700/80 bg-space-800/80 p-3 shadow-lg"
+      >
+        <div class="navbar-start">
+          <label
+            for="main-nav-toggle"
+            class="btn btn-ghost btn-square md:hidden"
+            aria-label="Toggle navigation"
+          >
+            <Menu class="size-5" />
+          </label>
+        </div>
+
+        <div class="navbar-center">
+          <div class="flex items-center gap-2 font-mono text-xl font-semibold text-slate-200">
+            <component
+              :is="activeSection.icon"
+              class="size-5 text-plasma-400"
+              aria-hidden="true"
+            />
+            <span>{{ activeSection.label }}</span>
+          </div>
+        </div>
+
+        <div class="navbar-end flex flex-col items-end font-mono text-sm">
+          <span class="tick-number text-plasma-400">
+            {{ player.creditsFormatted }} CR
+          </span>
+          <span class="tick-number text-slate-400">
+            Cargo: {{ player.cargoSummary }}
+          </span>
+        </div>
+      </header>
+
+      <main class="m-3 min-h-0 flex-1 overflow-y-auto">
+        <component :is="activeSection.view" />
+      </main>
+    </div>
+
+    <div class="drawer-side z-20">
+      <label
+        for="main-nav-toggle"
+        class="drawer-overlay"
+        aria-label="Close navigation"
+      />
+
+      <aside
+        class="flex min-h-full w-56 flex-col gap-2 border-r border-space-700/80 bg-space-800/95 p-3"
+      >
+        <div class="mb-2 flex items-center gap-2 px-1 py-2 font-mono text-sm font-semibold uppercase tracking-widest text-plasma-400">
+          <Rocket class="size-4" aria-hidden="true" />
+          <span>Star Vein</span>
+        </div>
+
+        <nav class="flex flex-col gap-1" aria-label="Main sections">
+          <SciFiButton
+            v-for="section in SECTIONS"
+            :key="section.id"
+            variant="nav"
+            size="sm"
+            block
+            :label="section.label"
+            :icon="section.icon"
+            :active="activeSectionId === section.id"
+            @click="selectSection(section.id)"
+          />
+        </nav>
+      </aside>
+    </div>
+  </div>
+</template>

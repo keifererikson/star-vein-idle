@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  --color-space-900: #0f172a;
+  --color-space-800: #1e293b;
+  --color-space-700: #334155;
+  --color-plasma-400: #2dd4bf;
+  --color-plasma-500: #14b8a6;
+  --color-plasma-600: #0d9488;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+  @apply bg-space-900 text-slate-300 font-sans antialiased overflow-hidden selection:bg-plasma-500/30;
+}
+
+.tick-number {
+  font-variant-numeric: tabular-nums;
+}
