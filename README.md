@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Star Vein Idle
 
-## Getting Started
+An idle space-mining game — early work in progress.
 
-First, run the development server:
+Built with **Vue 3**, **Vite**, **Pinia**, and **TypeScript**. Styling uses **Tailwind CSS** (with DaisyUI for now). Icons come from **lucide-vue-next**.
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:5173](http://localhost:5173).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other useful commands:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build    # production build
+npm run preview  # preview the build
+npm run lint
+```
 
-## Learn More
+## Project layout (rough)
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── components/   # UI building blocks
+├── views/        # Main screen panels
+├── layouts/      # App shell (sidebar, header)
+├── stores/       # Game state
+├── systems/      # Game logic
+└── lib/          # Shared constants, config
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This is a client-only SPA — no server rendering. The sidebar switches between section views using Vue’s dynamic `<component :is="...">` rather than a router (for now).
 
-## Deploy on Vercel
+Game state lives in Pinia and saves to `localStorage`. A simple tick runs once per second to drive mining and other systems over time.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Lots still to build: industry, market, fitting, more resources, balance, polish, etc. Structure and patterns may change as the project grows.
