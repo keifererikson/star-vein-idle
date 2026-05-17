@@ -3,33 +3,43 @@ import { onMounted, onUnmounted } from 'vue'
 
 import { usePlayerStore } from '@/stores/usePlayerStore'
 
-/** UI refresh rate; simulation uses wall-clock elapsed time in tick(). */
-const TICK_INTERVAL_MS = 100
+const MAX_DELTA_MS = 1000
 
 const player = usePlayerStore()
 
-let intervalId: ReturnType<typeof setInterval> | null = null
+let requestId: number | null = null
+let previousTime: number | null = null
 
-function runTick() {
-  if (document.visibilityState === 'hidden') return
-  player.tick()
+function loop(timestamp: number) {
+  if (document.visibilityState !== 'hidden') {
+    if (previousTime !== null) {
+      const deltaMs = Math.min(timestamp - previousTime, MAX_DELTA_MS)
+      if (deltaMs > 0) {
+        player.tick(deltaMs)
+      }
+    }
+    previousTime = timestamp
+  }
+
+  requestId = requestAnimationFrame(loop)
 }
 
 function onVisibilityChange() {
   if (document.visibilityState === 'visible') {
+    previousTime = null
     player.catchUpFromLastActive()
   }
 }
 
 onMounted(() => {
-  intervalId = setInterval(runTick, TICK_INTERVAL_MS)
+  requestId = requestAnimationFrame(loop)
   document.addEventListener('visibilitychange', onVisibilityChange)
 })
 
 onUnmounted(() => {
-  if (intervalId !== null) {
-    clearInterval(intervalId)
-    intervalId = null
+  if (requestId !== null) {
+    cancelAnimationFrame(requestId)
+    requestId = null
   }
   document.removeEventListener('visibilitychange', onVisibilityChange)
 })

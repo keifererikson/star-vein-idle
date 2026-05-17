@@ -44,8 +44,14 @@ export const usePlayerStore = defineStore('player', {
   },
 
   actions: {
-    /** Advance simulation by wall-clock time since the last tick. */
-    tick() {
+    tick(deltaMs: number) {
+      if (deltaMs > 0) {
+        processMining(this.$state, deltaMs)
+      }
+      this.lastActiveTimestamp = Date.now()
+    },
+
+    catchUpFromLastActive() {
       const now = Date.now()
       if (this.lastActiveTimestamp <= 0) {
         this.lastActiveTimestamp = now
@@ -57,10 +63,6 @@ export const usePlayerStore = defineStore('player', {
         processMining(this.$state, deltaMs)
       }
       this.lastActiveTimestamp = now
-    },
-
-    catchUpFromLastActive() {
-      this.tick()
     },
 
     startMining(resourceId: ResourceId): boolean {
