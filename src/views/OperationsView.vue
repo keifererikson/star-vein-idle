@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 
-import SciFiButton from '@/components/Action/SciFiButton.vue'
+import ActionButton from '@/components/Action/ActionButton.vue'
 import TerminalBox from '@/components/Content/TerminalBox.vue'
 import { usePlayerStore } from '@/stores/usePlayerStore'
 
@@ -70,7 +70,7 @@ const {
           }}
         </p>
         <div class="mt-3">
-          <SciFiButton
+          <ActionButton
             label="Mark Checkpoint"
             @click="player.markCheckpoint()"
           />

@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { Menu, Rocket } from 'lucide-vue-next'
 
-import SciFiButton from '@/components/Action/SciFiButton.vue'
+import ActionButton from '@/components/Action/ActionButton.vue'
 import {
   DEFAULT_SECTION_ID,
   SECTIONS,
@@ -90,7 +90,7 @@ function selectSection(id: SectionId) {
         </div>
 
         <nav class="flex flex-col gap-1" aria-label="Main sections">
-          <SciFiButton
+          <ActionButton
             v-for="section in SECTIONS"
             :key="section.id"
             variant="nav"

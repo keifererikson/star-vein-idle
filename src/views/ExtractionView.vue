@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 
-import SciFiButton from '@/components/Action/SciFiButton.vue'
+import ActionButton from '@/components/Action/ActionButton.vue'
 import TerminalBox from '@/components/Content/TerminalBox.vue'
 import ProgressGauge from '@/components/Feedback/ProgressGauge.vue'
 import { usePlayerStore } from '@/stores/usePlayerStore'
@@ -31,17 +31,17 @@ const { mining, status, isCargoFull } = storeToRefs(player)
     </p>
 
     <div class="mt-4 flex flex-wrap gap-2">
-      <SciFiButton
+      <ActionButton
         label="Start Mining"
         :disabled="isCargoFull"
         @click="player.startMining('iron')"
       />
-      <SciFiButton
+      <ActionButton
         variant="danger"
         label="Stop Mining"
         @click="player.stopMining()"
       />
-      <SciFiButton
+      <ActionButton
         variant="ghost"
         label="Jettison"
         @click="player.jettison()"
