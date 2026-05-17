@@ -21,6 +21,7 @@ const { mining, status } = storeToRefs(player)
     </p>
 
     <ProgressGauge
+      v-if="status === 'MINING' && mining.cycleDuration > 0"
       :value="mining.cycleStartTime"
       :max="mining.cycleDuration"
     />

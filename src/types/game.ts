@@ -19,7 +19,6 @@ export interface Ship {
   }
   modules: ShipModule[]
   cargo: Partial<Record<ResourceId, number>>
-  cargoUsed: number
 }
 
 export type GameStatus = 'IDLE' | 'MINING'
@@ -30,13 +29,19 @@ export interface MiningState {
   cycleDuration: number
 }
 
+export interface PlayerSkills {
+  miningLevel: number
+}
+
 export interface PlayerState {
+  saveVersion: number
   currencies: {
     data: number
     credits: number
   }
-  skills: Record<string, number>
-  lastTickTimestamp: number
+  skills: PlayerSkills
+  /** Wall-clock ms when the game last ran; drives offline catch-up. */
+  lastActiveTimestamp: number
   lastSaveTimestamp: number
   ship: Ship
   status: GameStatus

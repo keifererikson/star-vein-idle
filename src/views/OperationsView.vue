@@ -6,8 +6,15 @@ import TerminalBox from '@/components/Content/TerminalBox.vue'
 import { usePlayerStore } from '@/stores/usePlayerStore'
 
 const player = usePlayerStore()
-const { currencies, skills, ship, status, lastTickTimestamp, lastSaveTimestamp } =
-  storeToRefs(player)
+const {
+  currencies,
+  skills,
+  ship,
+  status,
+  cargoUsed,
+  lastActiveTimestamp,
+  lastSaveTimestamp,
+} = storeToRefs(player)
 </script>
 
 <template>
@@ -35,7 +42,7 @@ const { currencies, skills, ship, status, lastTickTimestamp, lastSaveTimestamp }
         <p class="font-mono text-sm">Name: {{ ship.name }}</p>
         <p class="font-mono text-sm">Status: {{ status }}</p>
         <p class="tick-number font-mono text-sm">
-          Cargo Used: {{ ship.cargoUsed }} / {{ ship.stats.maxCargo }} m³
+          Cargo Used: {{ cargoUsed }} / {{ ship.stats.maxCargo }} m³
         </p>
         <p class="font-mono text-xs text-slate-500">
           {{ JSON.stringify(ship.cargo) }}
@@ -43,21 +50,29 @@ const { currencies, skills, ship, status, lastTickTimestamp, lastSaveTimestamp }
       </TerminalBox>
 
       <TerminalBox title="Systems">
-        <p class="tick-number font-mono text-sm">
-          Last Tick: {{ lastTickTimestamp / 1000 }}s
+        <p class="font-mono text-xs text-slate-500">
+          Progress auto-saves on change. Checkpoint records time and flushes storage.
         </p>
         <p class="font-mono text-sm">
-          Last Save:
+          Last Checkpoint:
           {{
             lastSaveTimestamp
               ? new Date(lastSaveTimestamp).toLocaleString()
               : 'Never'
           }}
         </p>
+        <p class="tick-number font-mono text-xs text-slate-500">
+          Last active:
+          {{
+            lastActiveTimestamp
+              ? new Date(lastActiveTimestamp).toLocaleString()
+              : '—'
+          }}
+        </p>
         <div class="mt-3">
           <SciFiButton
-            label="Save"
-            @click="player.markSaved()"
+            label="Mark Checkpoint"
+            @click="player.markCheckpoint()"
           />
         </div>
       </TerminalBox>

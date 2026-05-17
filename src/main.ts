@@ -3,7 +3,6 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
 
 import App from '@/App.vue'
-import { usePlayerStore } from '@/stores/usePlayerStore'
 
 import '@/style.css'
 
@@ -15,4 +14,3 @@ app.use(pinia)
 
 app.mount('#app')
 
-usePlayerStore().startTickEngine()

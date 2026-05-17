@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 
+import { getCargoUsed } from '@/lib/cargo'
 import type { ResourceId } from '@/lib/constants'
+import { migratePlayerState, SAVE_VERSION } from '@/lib/saveMigration'
+import { createShipFromHull } from '@/lib/shipFactory'
 import { processMining } from '@/systems/miningSystem'
 import type { PlayerState } from '@/types/game'
 
@@ -8,6 +11,7 @@ const TICK_INTERVAL_MS = 1000
 
 function createInitialState(): PlayerState {
   return {
+    saveVersion: SAVE_VERSION,
     currencies: {
       data: 0,
       credits: 1000,
@@ -15,20 +19,9 @@ function createInitialState(): PlayerState {
     skills: {
       miningLevel: 1,
     },
-    lastTickTimestamp: 0,
+    lastActiveTimestamp: 0,
     lastSaveTimestamp: 0,
-    ship: {
-      name: 'SS Venture',
-      hullType: 'FRIGATE',
-      stats: {
-        maxSlots: 4,
-        maxCargo: 200,
-        baseWarpSpeed: 100,
-      },
-      modules: [],
-      cargo: {},
-      cargoUsed: 0,
-    },
+    ship: createShipFromHull('frigate'),
     status: 'IDLE',
     mining: {
       targetResourceId: null,
@@ -38,21 +31,34 @@ function createInitialState(): PlayerState {
   }
 }
 
-let tickTimer: ReturnType<typeof setInterval> | null = null
-
 export const usePlayerStore = defineStore('player', {
   state: (): PlayerState => createInitialState(),
 
   getters: {
     creditsFormatted: (state) => state.currencies.credits.toLocaleString(),
-    cargoSummary: (state) =>
-      `${state.ship.cargoUsed}/${state.ship.stats.maxCargo} m³`,
+    cargoUsed: (state) => getCargoUsed(state.ship.cargo),
+    cargoSummary: (state) => {
+      const used = getCargoUsed(state.ship.cargo)
+      return `${used}/${state.ship.stats.maxCargo} m³`
+    },
   },
 
   actions: {
     tick(deltaMs: number = TICK_INTERVAL_MS) {
-      this.lastTickTimestamp += deltaMs
       processMining(this.$state, deltaMs)
+      this.lastActiveTimestamp = Date.now()
+    },
+
+    catchUpFromLastActive() {
+      const last = this.lastActiveTimestamp
+      if (last <= 0) return
+
+      const elapsed = Date.now() - last
+      if (elapsed > 0) {
+        this.tick(elapsed)
+      } else {
+        this.lastActiveTimestamp = Date.now()
+      }
     },
 
     startMining(resourceId: ResourceId) {
@@ -66,44 +72,34 @@ export const usePlayerStore = defineStore('player', {
       this.status = 'IDLE'
       this.mining.targetResourceId = null
       this.mining.cycleStartTime = 0
+      this.mining.cycleDuration = 0
     },
 
     jettison() {
       this.ship.cargo = {}
-      this.ship.cargoUsed = 0
     },
 
-    markSaved() {
+    markCheckpoint() {
       this.lastSaveTimestamp = Date.now()
-    },
-
-    startTickEngine() {
-      if (tickTimer !== null) return
-      tickTimer = setInterval(() => {
-        this.tick(TICK_INTERVAL_MS)
-      }, TICK_INTERVAL_MS)
-    },
-
-    stopTickEngine() {
-      if (tickTimer === null) return
-      clearInterval(tickTimer)
-      tickTimer = null
+      this.$persist()
     },
   },
 
   persist: {
     key: 'star-vein-idle-player',
     pick: [
+      'saveVersion',
       'currencies',
       'skills',
-      'lastTickTimestamp',
+      'lastActiveTimestamp',
       'lastSaveTimestamp',
       'ship',
       'status',
       'mining',
     ],
     afterHydrate: (ctx) => {
-      ctx.store.lastTickTimestamp = 0
+      migratePlayerState(ctx.store.$state as PlayerState)
+      ctx.store.catchUpFromLastActive()
     },
   },
 })
