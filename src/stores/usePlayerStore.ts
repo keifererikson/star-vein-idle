@@ -7,8 +7,6 @@ import { createShipFromHull } from '@/lib/shipFactory'
 import { processMining } from '@/systems/miningSystem'
 import type { PlayerState } from '@/types/game'
 
-const TICK_INTERVAL_MS = 1000
-
 function createInitialState(): PlayerState {
   return {
     saveVersion: SAVE_VERSION,
@@ -41,31 +39,40 @@ export const usePlayerStore = defineStore('player', {
       const used = getCargoUsed(state.ship.cargo)
       return `${used}/${state.ship.stats.maxCargo} m³`
     },
+    isCargoFull: (state) =>
+      getCargoUsed(state.ship.cargo) >= state.ship.stats.maxCargo,
   },
 
   actions: {
-    tick(deltaMs: number = TICK_INTERVAL_MS) {
-      processMining(this.$state, deltaMs)
-      this.lastActiveTimestamp = Date.now()
+    /** Advance simulation by wall-clock time since the last tick. */
+    tick() {
+      const now = Date.now()
+      if (this.lastActiveTimestamp <= 0) {
+        this.lastActiveTimestamp = now
+        return
+      }
+
+      const deltaMs = now - this.lastActiveTimestamp
+      if (deltaMs > 0) {
+        processMining(this.$state, deltaMs)
+      }
+      this.lastActiveTimestamp = now
     },
 
     catchUpFromLastActive() {
-      const last = this.lastActiveTimestamp
-      if (last <= 0) return
-
-      const elapsed = Date.now() - last
-      if (elapsed > 0) {
-        this.tick(elapsed)
-      } else {
-        this.lastActiveTimestamp = Date.now()
-      }
+      this.tick()
     },
 
-    startMining(resourceId: ResourceId) {
+    startMining(resourceId: ResourceId): boolean {
+      if (getCargoUsed(this.ship.cargo) >= this.ship.stats.maxCargo) {
+        return false
+      }
+
       this.status = 'MINING'
       this.mining.targetResourceId = resourceId
       this.mining.cycleStartTime = 0
       this.mining.cycleDuration = 2000
+      return true
     },
 
     stopMining() {

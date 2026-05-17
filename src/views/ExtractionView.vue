@@ -7,7 +7,7 @@ import ProgressGauge from '@/components/Feedback/ProgressGauge.vue'
 import { usePlayerStore } from '@/stores/usePlayerStore'
 
 const player = usePlayerStore()
-const { mining, status } = storeToRefs(player)
+const { mining, status, isCargoFull } = storeToRefs(player)
 
 </script>
 
@@ -33,6 +33,7 @@ const { mining, status } = storeToRefs(player)
     <div class="mt-4 flex flex-wrap gap-2">
       <SciFiButton
         label="Start Mining"
+        :disabled="isCargoFull"
         @click="player.startMining('iron')"
       />
       <SciFiButton

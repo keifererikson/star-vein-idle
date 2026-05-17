@@ -17,12 +17,20 @@ function migrateToV1(state: PlayerState): void {
   const legacyShip = state.ship as PlayerState['ship'] & { cargoUsed?: number }
   const hullDefaults = createShipFromHull('frigate')
 
+  const legacyStats = legacyShip.stats
+
   state.ship = {
     ...hullDefaults,
     name: legacyShip.name ?? hullDefaults.name,
+    hullType: legacyShip.hullType ?? hullDefaults.hullType,
     modules: legacyShip.modules ?? [],
     cargo: legacyShip.cargo ?? {},
-    stats: hullDefaults.stats,
+    stats: {
+      maxSlots: legacyStats?.maxSlots ?? hullDefaults.stats.maxSlots,
+      maxCargo: legacyStats?.maxCargo ?? hullDefaults.stats.maxCargo,
+      baseWarpSpeed:
+        legacyStats?.baseWarpSpeed ?? hullDefaults.stats.baseWarpSpeed,
+    },
   }
 
   if (state.skills?.miningLevel === undefined) {
