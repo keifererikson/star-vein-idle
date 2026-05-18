@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { Clock, Coins } from 'lucide-vue-next'
 
 import ActionButton from '@/components/Action/ActionButton.vue'
 import TerminalBox from '@/components/Content/TerminalBox.vue'
@@ -81,7 +82,16 @@ function handleResourceClick(resId: ResourceId) {
             <h3 class="font-mono text-sm font-bold" :class="mining.targetResourceId === res.id && status === 'MINING' ? 'text-emerald-400' : 'text-slate-200'">
               {{ res.name }}
             </h3>
-            <p class="text-xs text-slate-400 font-mono mt-1">Value: {{ res.baseValue }} CR</p>
+            <div class="flex items-center gap-3 mt-1">
+              <div class="flex items-center gap-1 text-slate-400 font-mono text-xs">
+                <Coins class="w-3 h-3 text-slate-500" />
+                <span>{{ res.baseValue }} CR</span>
+              </div>
+              <div class="flex items-center gap-1 text-slate-400 font-mono text-xs">
+                <Clock class="w-3 h-3 text-slate-500" />
+                <span>2.0s</span>
+              </div>
+            </div>
           </div>
           <span 
             v-if="mining.targetResourceId === res.id && status === 'MINING'" 

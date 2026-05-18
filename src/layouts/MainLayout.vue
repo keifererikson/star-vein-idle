@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Menu, Rocket } from 'lucide-vue-next'
+import { Menu, Rocket, Coins, Package } from 'lucide-vue-next'
 
 import ActionButton from '@/components/Action/ActionButton.vue'
 import {
@@ -59,13 +59,15 @@ function selectSection(id: SectionId) {
           </div>
         </div>
 
-        <div class="navbar-end flex flex-col items-end font-mono text-sm">
-          <span class="tick-number text-plasma-400">
-            {{ player.creditsFormatted }} CR
-          </span>
-          <span class="tick-number text-slate-400">
-            Cargo: {{ player.cargoSummary }}
-          </span>
+        <div class="navbar-end flex flex-col items-end gap-1 font-mono text-sm">
+          <div class="flex items-center gap-1.5 text-plasma-400">
+            <Coins class="size-4" />
+            <span class="tick-number">{{ player.creditsFormatted }} CR</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-slate-400">
+            <Package class="size-4" />
+            <span class="tick-number">{{ player.cargoSummary }}</span>
+          </div>
         </div>
       </header>
 
