@@ -1,4 +1,5 @@
 import { addToCargo, getCargoUsed } from '@/lib/cargo'
+import { getLevelFromXp } from '@/lib/skills'
 import type { PlayerState } from '@/types/game'
 
 const BASE_MINING_YIELD = 10
@@ -32,6 +33,11 @@ function completeMiningCycle(state: PlayerState): boolean {
   const actualAdd = Math.min(rawYield, spaceRemaining)
 
   addToCargo(ship.cargo, resourceId, actualAdd)
+
+  if (actualAdd > 0) {
+    state.skills.miningXp += 10
+    state.skills.miningLevel = getLevelFromXp(state.skills.miningXp)
+  }
 
   const full = cargoUsed + actualAdd >= ship.stats.maxCargo
   const partialYield = actualAdd < rawYield

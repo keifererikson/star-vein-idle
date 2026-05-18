@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 
 import { getCargoUsed } from '@/lib/cargo'
-import type { ResourceId } from '@/lib/constants'
+import { type ResourceId, type SystemId, SYSTEMS } from '@/lib/constants'
 import { migratePlayerState, SAVE_VERSION } from '@/lib/saveMigration'
 import { createShipFromHull } from '@/lib/shipFactory'
+import { getLevelFromXp } from '@/lib/skills'
+import { sellAllCargo, sellResource } from '@/systems/marketSystem'
 import { processMining } from '@/systems/miningSystem'
 import type { PlayerState } from '@/types/game'
 
@@ -15,8 +17,10 @@ function createInitialState(): PlayerState {
       credits: 1000,
     },
     skills: {
+      miningXp: 0,
       miningLevel: 1,
     },
+    currentSystemId: 'anchor-point',
     lastActiveTimestamp: 0,
     lastSaveTimestamp: 0,
     ship: createShipFromHull('frigate'),
@@ -88,6 +92,29 @@ export const usePlayerStore = defineStore('player', {
       this.ship.cargo = {}
     },
 
+    addMiningXp(amount: number) {
+      this.skills.miningXp += amount
+      this.skills.miningLevel = getLevelFromXp(this.skills.miningXp)
+    },
+
+    changeSystem(systemId: SystemId): boolean {
+      if (this.status !== 'IDLE') return false
+      
+      const sys = SYSTEMS[systemId]
+      if (this.skills.miningLevel < sys.miningUnlockLevel) return false
+      
+      this.currentSystemId = systemId
+      return true
+    },
+
+    sellResource(resourceId: ResourceId, amount: number): boolean {
+      return sellResource(this.$state, resourceId, amount)
+    },
+
+    sellAllCargo(): number {
+      return sellAllCargo(this.$state)
+    },
+
     markCheckpoint() {
       this.lastSaveTimestamp = Date.now()
       this.$persist()
@@ -100,6 +127,7 @@ export const usePlayerStore = defineStore('player', {
       'saveVersion',
       'currencies',
       'skills',
+      'currentSystemId',
       'lastActiveTimestamp',
       'lastSaveTimestamp',
       'ship',

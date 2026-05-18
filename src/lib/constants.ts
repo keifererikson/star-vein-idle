@@ -54,21 +54,21 @@ export const SHIPS = {
 export type ShipId = keyof typeof SHIPS
 
 export const SYSTEMS = {
-  'Sector 001': {
-    id: 'sector-001',
-    name: 'Earth System',
+  'anchor-point': {
+    id: 'anchor-point',
+    name: 'Anchor Point',
     miningUnlockLevel: 1,
     resources: [RESOURCES.iron, RESOURCES.carbon],
   },
-  'The Belt': {
-    id: 'the-belt',
-    name: 'Asteroid Belt Alpha',
+  'shattered-belt': {
+    id: 'shattered-belt',
+    name: 'Shattered Belt',
     miningUnlockLevel: 5,
     resources: [RESOURCES.titanium, RESOURCES.pyrite],
   },
-  'Deep Space Outpost': {
-    id: 'deep-space-outpost',
-    name: 'Deep Space Outpost Zeta',
+  'vein-terminus': {
+    id: 'vein-terminus',
+    name: 'Vein Terminus',
     miningUnlockLevel: 10,
     resources: [RESOURCES.palladium, RESOURCES.uranium],
   },

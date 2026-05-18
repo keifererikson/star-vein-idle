@@ -1,4 +1,4 @@
-import type { ResourceId } from '@/lib/constants'
+import type { ResourceId, SystemId } from '@/lib/constants'
 
 export type ShipModuleType = 'LASER' | 'CARGO_HOLD' | 'ENGINE'
 
@@ -30,6 +30,7 @@ export interface MiningState {
 }
 
 export interface PlayerSkills {
+  miningXp: number
   miningLevel: number
 }
 
@@ -40,6 +41,7 @@ export interface PlayerState {
     credits: number
   }
   skills: PlayerSkills
+  currentSystemId: SystemId
   /** Wall-clock ms when the game last ran; drives offline catch-up. */
   lastActiveTimestamp: number
   lastSaveTimestamp: number
