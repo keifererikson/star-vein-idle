@@ -66,9 +66,18 @@ function selectSection(id: SectionId) {
             <Coins class="size-4" />
             <span class="tick-number">{{ player.creditsFormatted }} CR</span>
           </div>
-          <div class="flex items-center gap-1.5 text-slate-400">
-            <Package class="size-4" />
-            <span class="tick-number">{{ player.cargoSummary }}</span>
+          <div class="flex flex-col w-32">
+            <div class="flex items-center justify-end gap-1.5 text-slate-400 mb-1">
+              <Package class="size-4" />
+              <span class="tick-number">{{ player.cargoSummary }}</span>
+            </div>
+            <div class="h-1 w-full bg-space-950 rounded overflow-hidden relative">
+              <div 
+                class="absolute top-0 left-0 h-full transition-all duration-300"
+                :class="player.isCargoFull ? 'bg-red-500' : 'bg-amber-500'"
+                :style="{ width: `${Math.min(100, (player.cargoUsed / player.ship.stats.maxCargo) * 100)}%` }"
+              ></div>
+            </div>
           </div>
         </div>
       </header>
