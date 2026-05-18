@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Menu, Rocket, Coins, Package } from 'lucide-vue-next'
+import { Menu, Coins, Package } from 'lucide-vue-next'
 
 import ActionButton from '@/components/Action/ActionButton.vue'
+import GameLogo from '@/components/Content/GameLogo.vue'
 import {
   DEFAULT_SECTION_ID,
   SECTIONS,
@@ -86,10 +87,7 @@ function selectSection(id: SectionId) {
       <aside
         class="flex min-h-full w-56 flex-col gap-2 border-r border-space-700/80 bg-space-800/95 p-3"
       >
-        <div class="mb-2 flex items-center gap-2 px-1 py-2 font-mono text-sm font-semibold uppercase tracking-widest text-plasma-400">
-          <Rocket class="size-4" aria-hidden="true" />
-          <span>Star Vein</span>
-        </div>
+        <GameLogo class="mb-6 mt-2 mx-auto" />
 
         <nav class="flex flex-col gap-1" aria-label="Main sections">
           <ActionButton
