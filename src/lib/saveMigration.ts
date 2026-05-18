@@ -1,7 +1,7 @@
 import { createShipFromHull } from '@/lib/shipFactory'
 import type { PlayerState } from '@/types/game'
 
-export const SAVE_VERSION = 2
+export const SAVE_VERSION = 3
 
 export function migratePlayerState(state: PlayerState): void {
   const version = state.saveVersion ?? 0
@@ -12,6 +12,10 @@ export function migratePlayerState(state: PlayerState): void {
 
   if (version < 2) {
     migrateToV2(state)
+  }
+
+  if (version < 3) {
+    migrateToV3(state)
   }
 
   state.saveVersion = SAVE_VERSION
@@ -37,8 +41,15 @@ function migrateToV1(state: PlayerState): void {
     },
   }
 
-  if (state.skills?.miningLevel === undefined) {
-    state.skills = { miningLevel: 1, miningXp: 0 }
+  if (state.skills === undefined) {
+    state.skills = { 
+      mining: { xp: 0, level: 1 },
+      compression: { xp: 0, level: 1 },
+      refining: { xp: 0, level: 1 },
+      manufacturing: { xp: 0, level: 1 },
+      trading: { xp: 0, level: 1 },
+      exploration: { xp: 0, level: 1 },
+    } as any
   }
 
   if (state.lastActiveTimestamp === undefined) {
@@ -54,12 +65,26 @@ function migrateToV1(state: PlayerState): void {
   }
 }
 
-function migrateToV2(state: PlayerState): void {
+function migrateToV2(state: any): void {
   if (state.skills.miningXp === undefined) {
     state.skills.miningXp = 0
   }
   if (!state.currentSystemId) {
     state.currentSystemId = 'anchor-point'
+  }
+}
+
+function migrateToV3(state: any): void {
+  const oldMiningXp = state.skills?.miningXp ?? 0
+  const oldMiningLevel = state.skills?.miningLevel ?? 1
+  
+  state.skills = {
+    mining: { xp: oldMiningXp, level: oldMiningLevel },
+    compression: { xp: 0, level: 1 },
+    refining: { xp: 0, level: 1 },
+    manufacturing: { xp: 0, level: 1 },
+    trading: { xp: 0, level: 1 },
+    exploration: { xp: 0, level: 1 },
   }
 }
 

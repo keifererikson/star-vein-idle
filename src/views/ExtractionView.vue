@@ -13,7 +13,7 @@ const player = usePlayerStore()
 const { mining, status, isCargoFull, currentSystemId, skills } = storeToRefs(player)
 
 const availableSystems = computed(() => {
-  return Object.values(SYSTEMS).filter(s => skills.value.miningLevel >= s.miningUnlockLevel)
+  return Object.values(SYSTEMS).filter(s => skills.value.mining.level >= s.miningUnlockLevel)
 })
 
 const currentSystem = computed(() => SYSTEMS[currentSystemId.value])
@@ -116,8 +116,8 @@ function handleResourceClick(resId: ResourceId) {
     <!-- Footer Controls & Stats -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-slate-800 pt-4">
       <p class="font-mono text-sm text-slate-400">
-        Mining Level: <span class="text-emerald-400">{{ skills.miningLevel }}</span> 
-        <span class="text-xs ml-2 text-slate-500">({{ skills.miningXp }} XP)</span>
+        Mining Level: <span class="text-emerald-400">{{ skills.mining.level }}</span> 
+        <span class="text-xs ml-2 text-slate-500">({{ skills.mining.xp }} XP)</span>
       </p>
 
       <div class="flex flex-wrap gap-2">

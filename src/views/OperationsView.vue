@@ -34,7 +34,7 @@ const {
 
       <TerminalBox title="Skills">
         <p class="font-mono text-sm">
-          Mining Level: {{ skills.miningLevel }}
+          Mining Level: {{ skills.mining.level }} ({{ skills.mining.xp }} XP)
         </p>
       </TerminalBox>
 
@@ -69,10 +69,15 @@ const {
               : '—'
           }}
         </p>
-        <div class="mt-3">
+        <div class="mt-3 flex flex-wrap gap-2">
           <ActionButton
             label="Mark Checkpoint"
             @click="player.markCheckpoint()"
+          />
+          <ActionButton
+            variant="danger"
+            label="Hard Reset"
+            @click="player.hardReset()"
           />
         </div>
       </TerminalBox>

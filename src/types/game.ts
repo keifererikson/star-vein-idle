@@ -29,10 +29,14 @@ export interface MiningState {
   cycleDuration: number
 }
 
-export interface PlayerSkills {
-  miningXp: number
-  miningLevel: number
+export type SkillId = 'mining' | 'compression' | 'refining' | 'manufacturing' | 'trading' | 'exploration'
+
+export interface SkillState {
+  xp: number
+  level: number
 }
+
+export type PlayerSkills = Record<SkillId, SkillState>
 
 export interface PlayerState {
   saveVersion: number

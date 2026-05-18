@@ -7,7 +7,7 @@ import { createShipFromHull } from '@/lib/shipFactory'
 import { getLevelFromXp } from '@/lib/skills'
 import { sellAllCargo, sellResource } from '@/systems/marketSystem'
 import { processMining } from '@/systems/miningSystem'
-import type { PlayerState } from '@/types/game'
+import type { PlayerState, SkillId } from '@/types/game'
 
 function createInitialState(): PlayerState {
   return {
@@ -17,8 +17,12 @@ function createInitialState(): PlayerState {
       credits: 1000,
     },
     skills: {
-      miningXp: 0,
-      miningLevel: 1,
+      mining: { xp: 0, level: 1 },
+      compression: { xp: 0, level: 1 },
+      refining: { xp: 0, level: 1 },
+      manufacturing: { xp: 0, level: 1 },
+      trading: { xp: 0, level: 1 },
+      exploration: { xp: 0, level: 1 },
     },
     currentSystemId: 'anchor-point',
     lastActiveTimestamp: 0,
@@ -92,16 +96,16 @@ export const usePlayerStore = defineStore('player', {
       this.ship.cargo = {}
     },
 
-    addMiningXp(amount: number) {
-      this.skills.miningXp += amount
-      this.skills.miningLevel = getLevelFromXp(this.skills.miningXp)
+    addXp(skillId: SkillId, amount: number) {
+      this.skills[skillId].xp += amount
+      this.skills[skillId].level = getLevelFromXp(this.skills[skillId].xp)
     },
 
     changeSystem(systemId: SystemId): boolean {
       if (this.status !== 'IDLE') return false
       
       const sys = SYSTEMS[systemId]
-      if (this.skills.miningLevel < sys.miningUnlockLevel) return false
+      if (this.skills.mining.level < sys.miningUnlockLevel) return false
       
       this.currentSystemId = systemId
       return true
@@ -118,6 +122,13 @@ export const usePlayerStore = defineStore('player', {
     markCheckpoint() {
       this.lastSaveTimestamp = Date.now()
       this.$persist()
+    },
+
+    hardReset() {
+      // Overwrite in-memory state so any auto-saves before reload contain fresh data
+      this.$state = createInitialState()
+      this.$persist() // Explicitly flush the wiped state to local storage
+      window.location.reload()
     },
   },
 

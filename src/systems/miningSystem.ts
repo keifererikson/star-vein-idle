@@ -16,7 +16,7 @@ function computeMiningYield(state: PlayerState): number {
   }
 
   const skillMultiplier =
-    1 + (state.skills.miningLevel ?? 0) * YIELD_PER_SKILL_LEVEL
+    1 + (state.skills.mining.level ?? 0) * YIELD_PER_SKILL_LEVEL
 
   return (moduleYield || BASE_MINING_YIELD) * skillMultiplier
 }
@@ -35,8 +35,8 @@ function completeMiningCycle(state: PlayerState): boolean {
   addToCargo(ship.cargo, resourceId, actualAdd)
 
   if (actualAdd > 0) {
-    state.skills.miningXp += 10
-    state.skills.miningLevel = getLevelFromXp(state.skills.miningXp)
+    state.skills.mining.xp += 10
+    state.skills.mining.level = getLevelFromXp(state.skills.mining.xp)
   }
 
   const full = cargoUsed + actualAdd >= ship.stats.maxCargo
