@@ -32,7 +32,10 @@ function completeMiningCycle(state: PlayerState): boolean {
   const rawYield = computeMiningYield(state)
   const cargoUsed = getCargoUsed(ship.cargo)
   const spaceRemaining = ship.stats.maxCargo - cargoUsed
-  const actualAdd = Math.min(rawYield, spaceRemaining)
+  
+  const volPerUnit = RESOURCES[resourceId].volumePerUnit
+  const maxCanFit = Math.floor(spaceRemaining / volPerUnit)
+  const actualAdd = Math.min(rawYield, maxCanFit)
 
   addToCargo(ship.cargo, resourceId, actualAdd)
 
@@ -45,7 +48,7 @@ function completeMiningCycle(state: PlayerState): boolean {
     notifications.addToast(`+${actualAdd} ${resName}`, 'success')
   }
 
-  const full = cargoUsed + actualAdd >= ship.stats.maxCargo
+  const full = cargoUsed + (actualAdd * volPerUnit) >= ship.stats.maxCargo
   const partialYield = actualAdd < rawYield
 
   if (partialYield || full) {

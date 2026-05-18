@@ -4,24 +4,28 @@ export const RESOURCES = {
     name: 'Iron Ore',
     description: 'A common metal that can be sold for a minor profit.',
     baseValue: 3,
+    volumePerUnit: 1,
   },
   carbon: {
     id: 'carbon',
     name: 'Carbon',
     description: 'A basic element used in various manufacturing processes.',
     baseValue: 2,
+    volumePerUnit: 1,
   },
   titanium: {
     id: 'titanium',
     name: 'Titanium',
     description: 'A strong, lightweight metal used in advanced construction.',
     baseValue: 10,
+    volumePerUnit: 1,
   },
   pyrite: {
     id: 'pyrite',
     name: 'Pyrite',
     description: "Also known as fool's gold, it has some industrial uses.",
     baseValue: 8,
+    volumePerUnit: 1,
   },
   palladium: {
     id: 'palladium',
@@ -29,12 +33,14 @@ export const RESOURCES = {
     description:
       'A precious metal used in electronics and catalytic converters.',
     baseValue: 50,
+    volumePerUnit: 1,
   },
   uranium: {
     id: 'uranium',
     name: 'Uranium',
     description: 'A heavy metal used as fuel for nuclear reactors.',
     baseValue: 40,
+    volumePerUnit: 1,
   },
 } as const
 

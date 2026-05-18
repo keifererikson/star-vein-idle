@@ -1,9 +1,12 @@
-import type { ResourceId } from '@/lib/constants'
+import { RESOURCES, type ResourceId } from '@/lib/constants'
 
 export function getCargoUsed(
   cargo: Partial<Record<ResourceId, number>>,
 ): number {
-  return Object.values(cargo).reduce((sum, amount) => sum + (amount ?? 0), 0)
+  return Object.entries(cargo).reduce((sum, [resId, amount]) => {
+    const vol = RESOURCES[resId as ResourceId].volumePerUnit
+    return sum + (amount ?? 0) * vol
+  }, 0)
 }
 
 export function addToCargo(

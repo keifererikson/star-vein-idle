@@ -1,5 +1,6 @@
 import { removeFromCargo } from '@/lib/cargo'
 import { RESOURCES, type ResourceId } from '@/lib/constants'
+import { useNotificationStore } from '@/stores/useNotificationStore'
 import type { PlayerState } from '@/types/game'
 
 /**
@@ -16,6 +17,8 @@ export function sellResource(state: PlayerState, resourceId: ResourceId, amount:
   const removed = removeFromCargo(state.ship.cargo, resourceId, amount)
   if (removed > 0) {
     state.currencies.credits += value
+    const notifications = useNotificationStore()
+    notifications.addToast(`+${value.toLocaleString()} CR`, 'success')
     return true
   }
   
@@ -41,6 +44,8 @@ export function sellAllCargo(state: PlayerState): number {
   if (totalCreditsGained > 0) {
     state.ship.cargo = {}
     state.currencies.credits += totalCreditsGained
+    const notifications = useNotificationStore()
+    notifications.addToast(`+${totalCreditsGained.toLocaleString()} CR`, 'success')
   }
 
   return totalCreditsGained
