@@ -1,5 +1,7 @@
 import { addToCargo, getCargoUsed } from '@/lib/cargo'
+import { RESOURCES } from '@/lib/constants'
 import { getLevelFromXp } from '@/lib/skills'
+import { useNotificationStore } from '@/stores/useNotificationStore'
 import type { PlayerState } from '@/types/game'
 
 const BASE_MINING_YIELD = 10
@@ -37,6 +39,10 @@ function completeMiningCycle(state: PlayerState): boolean {
   if (actualAdd > 0) {
     state.skills.mining.xp += 10
     state.skills.mining.level = getLevelFromXp(state.skills.mining.xp)
+    
+    const resName = RESOURCES[resourceId].name
+    const notifications = useNotificationStore()
+    notifications.addToast(`+${actualAdd} ${resName}`, 'success')
   }
 
   const full = cargoUsed + actualAdd >= ship.stats.maxCargo
