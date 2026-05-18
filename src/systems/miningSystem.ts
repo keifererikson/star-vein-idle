@@ -40,7 +40,8 @@ function completeMiningCycle(state: PlayerState): boolean {
   addToCargo(ship.cargo, resourceId, actualAdd)
 
   if (actualAdd > 0) {
-    state.skills.mining.xp += 10
+    const xpGain = RESOURCES[resourceId].baseXp
+    state.skills.mining.xp += xpGain
     state.skills.mining.level = getLevelFromXp(state.skills.mining.xp)
     
     const resName = RESOURCES[resourceId].name
