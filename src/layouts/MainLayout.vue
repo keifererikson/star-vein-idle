@@ -4,6 +4,7 @@ import { Menu, Coins, Package } from 'lucide-vue-next'
 
 import ActionButton from '@/components/Action/ActionButton.vue'
 import GameLogo from '@/components/Content/GameLogo.vue'
+import { getSkillProgress } from '@/lib/skills'
 import {
   DEFAULT_SECTION_ID,
   SECTIONS,
@@ -90,17 +91,49 @@ function selectSection(id: SectionId) {
         <GameLogo class="mb-6 mt-2 mx-auto" />
 
         <nav class="flex flex-col gap-1" aria-label="Main sections">
-          <ActionButton
-            v-for="section in SECTIONS"
-            :key="section.id"
-            variant="nav"
-            size="sm"
-            block
-            :label="section.label"
-            :icon="section.icon"
-            :active="activeSectionId === section.id"
-            @click="selectSection(section.id)"
-          />
+          <template v-for="section in SECTIONS" :key="section.id">
+            <ActionButton
+              variant="nav"
+              size="sm"
+              block
+              :label="section.label"
+              :icon="section.icon"
+              :active="activeSectionId === section.id"
+              @click="selectSection(section.id)"
+            />
+
+            <!-- Sub-panel for Extraction -->
+            <div 
+              v-if="section.id === 'extraction'"
+              class="ml-3 mb-1 flex flex-col gap-1 border-l border-space-600"
+            >
+              <button
+                class="relative flex flex-col text-left pl-3 pr-2 py-2 bg-space-800/30 hover:bg-space-700/50 transition-colors rounded-r cursor-pointer overflow-hidden group"
+                @click="selectSection(section.id)"
+              >
+                <div 
+                  class="flex justify-between items-center text-xs font-mono w-full transition-colors"
+                  :class="player.status === 'MINING' ? 'text-emerald-400' : 'text-slate-400 group-hover:text-slate-300'"
+                >
+                  <span class="flex items-center gap-1.5">
+                    <span 
+                      v-if="player.status === 'MINING'" 
+                      class="size-1.5 rounded-full bg-emerald-400 animate-pulse"
+                    ></span>
+                    Ore Mining
+                  </span>
+                  <span class="text-emerald-400">Lv.{{ player.skills.mining.level }}</span>
+                </div>
+                <!-- Embedded bottom progress bar -->
+                <div class="absolute bottom-0 left-0 h-0.5 w-full bg-space-950/50">
+                  <div 
+                    class="h-full bg-emerald-500 transition-all duration-300"
+                    :style="{ width: `${getSkillProgress(player.skills.mining.xp, player.skills.mining.level)}%` }"
+                  ></div>
+                </div>
+              </button>
+            </div>
+          </template>
         </nav>
       </aside>
     </div>
