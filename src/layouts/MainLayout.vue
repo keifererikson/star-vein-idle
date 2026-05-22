@@ -21,9 +21,25 @@ const activeSection = computed(() =>
   SECTIONS[0],
 )
 
+const lastExtractionTab = ref<SectionId>('extraction')
+
 function selectSection(id: SectionId) {
+  if (id.startsWith('extraction')) {
+    lastExtractionTab.value = id
+  }
   activeSectionId.value = id
   sidebarOpen.value = false
+}
+
+function handleExtractionClick() {
+  // If actively doing an extraction task, route to that specific tab
+  if (player.status === 'MINING') {
+    // Currently only Ore Mining exists, but later we check targetResourceId
+    selectSection('extraction')
+  } else {
+    // Otherwise route to the last used tab
+    selectSection(lastExtractionTab.value)
+  }
 }
 </script>
 
@@ -108,7 +124,7 @@ function selectSection(id: SectionId) {
               :label="section.label"
               :icon="section.icon"
               :active="activeSectionId === section.id"
-              @click="selectSection(section.id)"
+              @click="section.id === 'extraction' ? handleExtractionClick() : selectSection(section.id)"
             />
 
             <!-- Sub-panel for Extraction -->
