@@ -113,7 +113,7 @@ function handleResourceClick(resId: ResourceId) {
           
           <div 
             v-if="mining.targetResourceId === res.id && status === 'MINING'" 
-            class="absolute inset-0 flex items-center justify-center text-[10px] leading-none mb-[1px] font-mono font-bold text-slate-100 uppercase tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] pointer-events-none animate-pulse z-10"
+            class="absolute inset-0 flex items-center justify-center text-[10px] leading-none pb-[4px] font-mono font-bold text-slate-100 uppercase tracking-widest drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] pointer-events-none animate-pulse z-10"
           >
             MINING
           </div>
